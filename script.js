@@ -46,7 +46,7 @@ app = Vue.createApp({
             this.dataPays.find((item) => item.nom === this.paysSelectionne)
           )
         ) {
-          this.paysAAffiches.push(
+          this.paysAAffiches.unshift(
             this.dataPays.find((item) => item.nom === this.paysSelectionne)
           );
         }

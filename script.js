@@ -9,6 +9,36 @@ app = Vue.createApp({
       paysAAffiches: [],
     };
   },
+  created(){
+// Récupération des data de l'API par une requête unique
+const url = "https://restcountries.com/v3.1/all";
+let requete = new XMLHttpRequest();
+requete.open("GET", url);
+requete.responseType = "json";
+requete.send();
+requete.onload = function () {
+  if (requete.readyState === XMLHttpRequest.DONE) {
+    if (requete.status === 200) {
+      let reponse = requete.response;
+      // Construction du dictionnaire de pays avec des data réduites
+      for (let element of reponse) {
+        vm.dataPays.push({
+          nom: element["translations"]["fra"]["common"],
+          population: element["population"],
+          continentEn: element["continents"],
+          superficie: element["area"],
+          lienDrapeau: element["flags"]["png"],
+          lienMaps: element["maps"]["googleMaps"],
+        });
+      }
+      // Construction de la liste des noms de pays
+      for (let pays of vm.dataPays) {
+        vm.listTotaleNomPays.push(pays.nom);
+      }
+    }
+  }
+};
+  },
   methods: {
     // Recherche les pays commençant par l'input text
     recherchePays(env) {
@@ -64,33 +94,3 @@ app = Vue.createApp({
   },
 });
 const vm = app.mount("#app");
-
-// Récupération des data de l'API par une requête unique
-const url = "https://restcountries.com/v3.1/all";
-let requete = new XMLHttpRequest();
-requete.open("GET", url);
-requete.responseType = "json";
-requete.send();
-requete.onload = function () {
-  if (requete.readyState === XMLHttpRequest.DONE) {
-    if (requete.status === 200) {
-      let reponse = requete.response;
-      console.log(reponse);
-      // Construction du dictionnaire de pays avec des data réduites
-      for (let element of reponse) {
-        vm.dataPays.push({
-          nom: element["translations"]["fra"]["common"],
-          population: element["population"],
-          continentEn: element["continents"],
-          superficie: element["area"],
-          lienDrapeau: element["flags"]["png"],
-          lienMaps: element["maps"]["googleMaps"],
-        });
-      }
-      // Construction de la liste des noms de pays
-      for (let pays of vm.dataPays) {
-        vm.listTotaleNomPays.push(pays.nom);
-      }
-    }
-  }
-};

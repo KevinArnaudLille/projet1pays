@@ -20,6 +20,7 @@ requete.onload = function () {
   if (requete.readyState === XMLHttpRequest.DONE) {
     if (requete.status === 200) {
       let reponse = requete.response;
+      console.log(reponse)
       // Construction du dictionnaire de pays avec des data réduites
       for (let element of reponse) {
         vm.dataPays.push({
@@ -30,13 +31,13 @@ requete.onload = function () {
           lienDrapeau: element["flags"]["png"],
           lienMaps: element["maps"]["googleMaps"],
         });
-      }
+      };
       // Construction de la liste des noms de pays
       for (let pays of vm.dataPays) {
         vm.listTotaleNomPays.push(pays.nom);
-      }
-    }
-  }
+      };
+    };
+  };
 };
   },
   methods: {
